@@ -1,4 +1,8 @@
 /*
+ 
+ Clone this playground by entering this in the command line:
+ git clone https://github.com/enuance/GenericsTutorial.git
+ 
  What are Generics?
  
  Definition From The Apple Dev Docs Page: Generic code enables you to write flexible, reusable functions and types that can work with any type, subject to requirements that you define. You can write code that avoids duplication and expresses its intent in a clear, abstracted manner.
