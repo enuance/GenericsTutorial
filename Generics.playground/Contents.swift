@@ -16,3 +16,83 @@
  */
 
 import Foundation
+
+fileprivate class StackElement<T>{
+    var value: T
+    var nextStackElement: StackElement?
+    init(value: T){self.value = value}
+}
+
+class Stack<Element>{
+    private var top: StackElement<Element>?
+    var showing: Element?{return top?.value}
+    var underneath: Element?{return top?.nextStackElement?.value}
+    var root: Element?{return findRoot()}
+    var count: Int{return findCount()}
+    
+    func push(value: Element){
+        let newTop = StackElement(value: value)
+        newTop.nextStackElement = top
+        top = newTop
+    }
+    
+    func pop() -> Element?{
+        guard let currentTop = top else{return nil}
+        let oldTop = currentTop
+        top = oldTop.nextStackElement
+        return oldTop.value
+    }
+    
+    private func findCount(stackElement: StackElement<Element>? = nil, isStarting: Bool = true, currentCount: Int = 0) -> Int{
+        if isStarting{ return findCount(stackElement: top, isStarting: false)}
+        if let stackElement = stackElement{
+            let newCount = currentCount + 1
+            return findCount(stackElement: stackElement.nextStackElement , isStarting:false, currentCount: newCount)
+        }
+        return currentCount
+    }
+    
+    private func findRoot(stackElement: StackElement<Element>? = nil, isStarting: Bool = true) -> Element?{
+        if isStarting{return findRoot(stackElement: top,isStarting: false)}
+        if let nextStackElement = stackElement?.nextStackElement{
+            return findRoot(stackElement:nextStackElement, isStarting: false)
+        }
+        return stackElement?.value
+    }
+    
+}
+
+let testStack = Stack<Int>()
+testStack.push(value: 12)
+testStack.push(value: 22)
+testStack.pop()
+testStack.pop()
+testStack.pop()
+testStack.root
+testStack.count
+
+class Bob: Equatable{
+    static func ==(lhs: Bob, rhs: Bob) -> Bool {
+        return lhs.age == rhs.age
+    }
+    
+    var age: Int
+    init(age: Int){
+        self.age = age
+    }
+    
+}
+
+var firstValue = Bob(age:1)
+var secondValue = Bob(age:2)
+
+func swapTwoValue<T: Equatable>(one: inout T, two: inout T){
+    let holder = one
+    one = two
+    two = holder
+}
+
+swapTwoValue(one: &firstValue, two: &secondValue)
+
+
+
